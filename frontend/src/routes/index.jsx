@@ -1,29 +1,31 @@
-import React from 'react';
-import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
-import Login from '../components/Login/login.js'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "../App.jsx";
+import Login from "../components/Login/login.jsx";
+import { useState } from "react";
+import authRoutes from "./authRoutes.jsx";
 
-const router=createBrowserRouter([
-{
+const AppRouter = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false); 
 
-    path : "/" ,
-    element : <App/>,
-    children:[
-        // {
-        //     path:"",
-        //     element:<Home/>
 
-        // },
-        {
-            path:"login",
-            element:<Login/>
-        },
-        {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Login setIsAuthenticated={setIsAuthenticated} />, 
+    },
+    {
+      path: "/app",
+      element: (
+        <authRoutes isAuthenticated={isAuthenticated}>
+          <App />
+        </authRoutes>
 
-        }
-    ]
-}
+      
+      ),
+    },
+  ]);
 
-])
+  return <RouterProvider router={router} />;
+};
 
-export default router;
+export default AppRouter;
